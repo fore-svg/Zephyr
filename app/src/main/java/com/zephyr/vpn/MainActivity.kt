@@ -31,7 +31,12 @@ private val blue = Color(0xFF45B6FF)
 
 @Composable
 fun ZephyrApp() {
-    var selectedServer by remember { mutableStateOf("Нидерланды 🇳🇱") }
+    var selectedServer by remember {
+        mutableStateOf("Netherlands 🇳🇱")
+    }
+    var expanded by remember {
+        mutableStateOf(false)
+    }
 
     MaterialTheme {
         Column(
@@ -50,7 +55,7 @@ fun ZephyrApp() {
             )
 
             Text(
-                "VPN  •  FREE",
+                "VPN • FREE",
                 color = blue,
                 fontSize = 13.sp
             )
@@ -81,7 +86,11 @@ fun ZephyrApp() {
                         .background(Color(0xFF183D60), CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Z", color = blue, fontSize = 72.sp)
+                    Text(
+                        "Z",
+                        color = blue,
+                        fontSize = 72.sp
+                    )
                 }
             }
 
@@ -111,10 +120,10 @@ fun ZephyrApp() {
 
                     Spacer(Modifier.height(12.dp))
 
-                    var expanded by remember { mutableStateOf(false) }
-
                     Box {
-                        TextButton(onClick = { expanded = true }) {
+                        TextButton(
+                            onClick = { expanded = true }
+                        ) {
                             Text(
                                 selectedServer,
                                 color = Color.White,
@@ -124,13 +133,15 @@ fun ZephyrApp() {
 
                         DropdownMenu(
                             expanded = expanded,
-                            onDismissRequest = { expanded = false }
+                            onDismissRequest = {
+                                expanded = false
+                            }
                         ) {
                             listOf(
-                                "Нидерланды 🇳🇱",
-                                "Германия 🇩🇪",
-                                "Франция 🇫🇷",
-                                "Финляндия 🇫🇮"
+                                "Netherlands 🇳🇱",
+                                "Germany 🇩🇪",
+                                "France 🇫🇷",
+                                "Finland 🇫🇮"
                             ).forEach { server ->
                                 DropdownMenuItem(
                                     text = { Text(server) },
@@ -155,16 +166,25 @@ fun ZephyrApp() {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(Modifier.padding(18.dp)) {
-                    Text("CONNECTION", color = Color.Gray, fontSize = 12.sp)
+                    Text(
+                        "CONNECTION",
+                        color = Color.Gray,
+                        fontSize = 12.sp
+                    )
+
                     Spacer(Modifier.height(6.dp))
-                    Text("No active tunnel", color = Color.White)
+
+                    Text(
+                        "No active tunnel",
+                        color = Color.White
+                    )
                 }
             }
 
             Spacer(Modifier.weight(1f))
 
             Text(
-                "ZEPHYR VPN  •  VERSION 1.0",
+                "ZEPHYR VPN • VERSION 1.0",
                 color = Color.Gray,
                 fontSize = 11.sp
             )
