@@ -1,4 +1,3 @@
-
 package com.zephyr.vpn
 
 import android.os.Bundle
@@ -6,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,169 +23,133 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private val bg = Color(0xFF080D17)
-private val panel = Color(0xFF121C2C)
-private val blue = Color(0xFF45B6FF)
-
 @Composable
 fun ZephyrApp() {
-    var selectedServer by remember {
-        mutableStateOf("Netherlands 🇳🇱")
-    }
-    var expanded by remember {
-        mutableStateOf(false)
-    }
+    var connected by remember { mutableStateOf(false) }
+    var selectedServer by remember { mutableStateOf("Netherlands") }
+    var expanded by remember { mutableStateOf(false) }
 
-    MaterialTheme {
-        Column(
+    val bg = Color(0xFF080D17)
+    val panel = Color(0xFF121C2C)
+    val blue = Color(0xFF45B6FF)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(bg)
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(45.dp))
+
+        Text(
+            "ZEPHYR",
+            fontSize = 32.sp,
+            color = Color.White
+        )
+
+        Text(
+            "SECURE CONNECTION",
+            fontSize = 12.sp,
+            color = blue
+        )
+
+        Spacer(modifier = Modifier.height(50.dp))
+
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .background(bg)
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .size(190.dp)
+                .background(panel, RoundedCornerShape(100.dp)),
+            contentAlignment = Alignment.Center
         ) {
-            Spacer(Modifier.height(24.dp))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    if (connected) "CONNECTED" else "DISCONNECTED",
+                    color = if (connected) Color.Green else Color.LightGray,
+                    fontSize = 14.sp
+                )
 
-            Text(
-                "ZEPHYR",
-                fontSize = 30.sp,
-                color = Color.White
-            )
+                Spacer(modifier = Modifier.height(12.dp))
 
-            Text(
-                "VPN • FREE",
-                color = blue,
-                fontSize = 13.sp
-            )
-
-            Spacer(Modifier.height(42.dp))
-
-            Text("VPN STATUS", color = Color.Gray)
-
-            Spacer(Modifier.height(10.dp))
-
-            Text(
-                "Not connected",
-                color = Color.White,
-                fontSize = 24.sp
-            )
-
-            Spacer(Modifier.height(35.dp))
-
-            Box(
-                modifier = Modifier
-                    .size(210.dp)
-                    .background(Color(0xFF122A43), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(170.dp)
-                        .background(Color(0xFF183D60), CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        "Z",
-                        color = blue,
-                        fontSize = 72.sp
-                    )
-                }
+                Text(
+                    if (connected) "✓" else "⏻",
+                    fontSize = 60.sp,
+                    color = blue
+                )
             }
+        }
 
-            Spacer(Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
+        Button(
+            onClick = { connected = !connected },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = blue
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(55.dp),
+            shape = RoundedCornerShape(15.dp)
+        ) {
             Text(
-                "VPN tunnel not configured",
-                color = Color(0xFFFFC66D),
-                fontSize = 12.sp
-            )
-
-            Spacer(Modifier.height(35.dp))
-
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = panel
-                ),
-                shape = RoundedCornerShape(18.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(Modifier.padding(18.dp)) {
-                    Text(
-                        "SERVER LOCATION",
-                        color = Color.Gray,
-                        fontSize = 12.sp
-                    )
-
-                    Spacer(Modifier.height(12.dp))
-
-                    Box {
-                        TextButton(
-                            onClick = { expanded = true }
-                        ) {
-                            Text(
-                                selectedServer,
-                                color = Color.White,
-                                fontSize = 18.sp
-                            )
-                        }
-
-                        DropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = {
-                                expanded = false
-                            }
-                        ) {
-                            listOf(
-                                "Netherlands 🇳🇱",
-                                "Germany 🇩🇪",
-                                "France 🇫🇷",
-                                "Finland 🇫🇮"
-                            ).forEach { server ->
-                                DropdownMenuItem(
-                                    text = { Text(server) },
-                                    onClick = {
-                                        selectedServer = server
-                                        expanded = false
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            Spacer(Modifier.height(20.dp))
-
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = panel
-                ),
-                shape = RoundedCornerShape(18.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(Modifier.padding(18.dp)) {
-                    Text(
-                        "CONNECTION",
-                        color = Color.Gray,
-                        fontSize = 12.sp
-                    )
-
-                    Spacer(Modifier.height(6.dp))
-
-                    Text(
-                        "No active tunnel",
-                        color = Color.White
-                    )
-                }
-            }
-
-            Spacer(Modifier.weight(1f))
-
-            Text(
-                "ZEPHYR VPN • VERSION 1.0",
-                color = Color.Gray,
-                fontSize = 11.sp
+                if (connected) "DISCONNECT" else "CONNECT",
+                color = Color.Black
             )
         }
+
+        Spacer(modifier = Modifier.height(35.dp))
+
+        Text("SERVER LOCATION", color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Box {
+            Button(
+                onClick = { expanded = true },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = panel
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(selectedServer, color = Color.White)
+                Text("  ▼", color = blue)
+            }
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                listOf(
+                    "Netherlands",
+                    "Germany",
+                    "France",
+                    "Finland"
+                ).forEach { server ->
+                    DropdownMenuItem(
+                        text = { Text(server) },
+                        onClick = {
+                            selectedServer = server
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Text(
+            "Zephyr VPN",
+            color = Color.Gray,
+            fontSize = 12.sp
+        )
+
+        Text(
+            "Privacy • Security • Freedom",
+            color = blue,
+            fontSize = 11.sp
+        )
+
+        Spacer(modifier = Modifier.height(15.dp))
     }
 }
